@@ -1,0 +1,33 @@
+<form [formGroup]="busForm" (ngSubmit)="onSubmit()">
+  <div>
+      <label for="busNumber">Nombre de bus: </label>
+      <input id="busNumber" formControlName="busNumber">
+  </div>
+
+  <div formArrayName="accompagnateurs">
+    <h2>Accompagnateurs</h2>
+  
+    <div *ngFor="let accompagnateur of accompagnateurs.controls; let i=index">
+      <label for="accompagnateur-{{ i }}">Accompagnateur:</label>
+      <input id="accompagnateur-{{ i }}" type="text" [formControlName]="i">
+
+      <select >
+        <option value="Statut de l'accompagnateur" disabled>Statut de l'accompagnateur</option>
+        <option *ngFor="let statut of statutFormateurs" [value]="statut.nom">{{statut.nom}}</option>
+     </select>
+
+      <button (click)="delAccompagnateurs()" type="button">Supprimer accompagnateur</button>
+    </div>
+
+    <button (click)="addAccompagnateurs()" type="button">Ajouter accompagnateur</button>
+  </div>
+
+  <h2>Choix des stations:</h2>
+  <div *ngFor="let station of stations; let i=index">
+    <input type="checkbox" formArrayName="stations" [value]="station.nom" (change)="onCheckboxChange($event)"/> {{station.nom}}
+  </div>
+
+  <button type="submit" [disabled]="!busForm.valid">Submit</button>
+</form>
+
+{{busForm.value | json}}

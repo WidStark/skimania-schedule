@@ -1,0 +1,78 @@
+<form [formGroup]="myForm" (ngSubmit)="submit()">
+	<div>
+		Bus disponibles:
+		<div>
+			<label for="busSamedi">Nombre de bus pour la journée du samedi : </label>
+      		<input id="busSamedi" formControlName="busSamedi">
+
+  			<!--<h2>Choix des stations:</h2>
+			<div *ngFor="let station of stations; let i=index">
+				<input type="checkbox" formArrayName="stations" [value]="station.nom" (change)="onCheckboxChange($event)"/> {{station.nom}}
+			</div>-->
+		</div>
+		<div>
+			<label for="busDimanche">Nombre de bus pour la journée du dimanche : </label>
+      		<input id="busDimanche" formControlName="busDimanche">
+		</div>
+	</div>
+    <div>
+        <label for="file">File</label>
+        <input 
+            formControlName="file"
+            id="file" 
+            type="file"
+            (change)="onFileChange($event)">
+    </div>         
+    <button type="submit">Submit</button>
+</form>
+
+<div *ngIf="displayedData">
+	<button (click)="updateDisplayedData(0)" type="button">Tout</button>
+	<button (click)="updateDisplayedData(3)" type="button">Samedi</button>
+	<button (click)="updateDisplayedData(4)" type="button">Dimanche</button>
+	<table>
+		<tr>
+			<th>Nom</th>
+			<th>Prenom</th>
+			<th>Fonction</th>
+			<th>Samedi</th>
+			<th>Dimanche</th>
+			<th>Moyen de transport;</th>
+			<th>Multi disponibilité</th>
+			<th>Remarques</th>
+		</tr>
+		<tr *ngFor="let row of displayedData">
+			<td *ngFor="let content of row;">{{ content }}</td>
+		</tr>
+	</table>
+
+	Samedi:
+	<table>
+		<tr>
+			<td>Destinations</td>
+			<td>{{ samedi.destinations }}</td>
+
+		</tr>
+		<tr>
+			<td>Nombre de bus</td>
+			<td>{{ samedi.bus }}</td>
+
+		</tr>
+		<tr>
+			<td>Coordinateurs</td>
+			<td>{{ samedi.coordinators }}</td>
+
+		</tr>
+		<tr>
+			<td>Accompagnateurs</td>
+			<td>{{ samedi.attendants }}</td>
+
+		</tr>
+		<tr>
+			<td>Nouveaux accompagnateurs</td>
+			<td>{{ samedi.newAttendants }}</td>
+		</tr>
+	</table>
+
+	
+</div>
