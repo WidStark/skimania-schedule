@@ -1,0 +1,8 @@
+<div>
+	<label for="nbBus">Nombre de bus pour la journée du {{ dayName }} : </label>
+	<input id="nbBus" formControlName="nbBus">
+
+	<div *ngFor="let station of stations; let i=index">
+		<input type="checkbox" formArrayName="stations" [value]="station.nom" (change)="onCheckboxChange($event)"/> {{station.nom}}
+	</div>
+</div>

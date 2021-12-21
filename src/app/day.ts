@@ -1,5 +1,5 @@
-export class Day {
-  destinations: string[];
+export interface Day {
+  destinations: string;
   bus: number;
   newAttendants: number;
   attendants: number;

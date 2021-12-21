@@ -1,14 +1,65 @@
-<form [formGroup]="myForm" (ngSubmit)="submit()">
+<mat-grid-list cols="2" >
+	<form [formGroup]="myForm" (ngSubmit)="submit()">
+  		<mat-grid-tile>
+  			<mat-card>
+			  <mat-card-title>Samedi</mat-card-title>
+			  <mat-card-content>
+      			<mat-form-field class="example-full-width">
+				    <mat-label>Nombre de bus:</mat-label>
+				    <input type="number" matInput formControlName="busSamedi" >
+				  </mat-form-field>
+
+				<section formGroupName="stationsSamedi" *ngFor="let station of stations">
+					<p><mat-checkbox [formControlName]="station.fcn">{{station.nom}}</mat-checkbox></p>
+  				</section>
+			  </mat-card-content>
+			</mat-card>
+  		</mat-grid-tile>
+
+  		<mat-grid-tile>
+  			<mat-card>
+			  <mat-card-title>Dimanche</mat-card-title>
+			  <mat-card-content>
+      			<mat-form-field class="example-full-width">
+				    <mat-label>Nombre de bus:</mat-label>
+				    <input type="number" matInput formControlName="busDimanche" >
+				  </mat-form-field>
+
+      			<section formGroupName="stationsDimanche" *ngFor="let station of stations">
+					<p><mat-checkbox [formControlName]="station.fcn">{{station.nom}}</mat-checkbox></p>
+  				</section>
+			  </mat-card-content>
+			</mat-card>
+  		</mat-grid-tile>
+
+		<mat-grid-tile>
+	        <label for="file">File</label>
+	        <input 
+	            formControlName="file"
+	            id="file" 
+	            type="file"
+	            (change)="onFileChange($event)">
+    	</mat-grid-tile>
+
+	    <mat-grid-tile>    
+		    <button mat-raised-button color="primary" type="submit">Submit</button>
+	    </mat-grid-tile>
+
+	</form>
+
+</mat-grid-list>
+
+{{ myForm.value | json }}
+
+<!--<form [formGroup]="myForm" (ngSubmit)="submit()">
 	<div>
-		Bus disponibles:
 		<div>
 			<label for="busSamedi">Nombre de bus pour la journée du samedi : </label>
       		<input id="busSamedi" formControlName="busSamedi">
 
-  			<!--<h2>Choix des stations:</h2>
 			<div *ngFor="let station of stations; let i=index">
 				<input type="checkbox" formArrayName="stations" [value]="station.nom" (change)="onCheckboxChange($event)"/> {{station.nom}}
-			</div>-->
+			</div>
 		</div>
 		<div>
 			<label for="busDimanche">Nombre de bus pour la journée du dimanche : </label>
@@ -23,28 +74,80 @@
             type="file"
             (change)="onFileChange($event)">
     </div>         
-    <button type="submit">Submit</button>
-</form>
+    <button mat-raised-button color="primary" type="submit">Submit</button>
+</form>-->
 
 <div *ngIf="displayedData">
-	<button (click)="updateDisplayedData(0)" type="button">Tout</button>
-	<button (click)="updateDisplayedData(3)" type="button">Samedi</button>
-	<button (click)="updateDisplayedData(4)" type="button">Dimanche</button>
-	<table>
+	<button (click)="updateDisplayedData(0)" mat-raised-button color="primary" type="button">Tout</button>
+	<button (click)="updateDisplayedData(3)" mat-raised-button color="primary" type="button">Samedi</button>
+	<button (click)="updateDisplayedData(4)" mat-raised-button color="primary" type="button">Dimanche</button>
+	<!--<table>
 		<tr>
 			<th>Nom</th>
 			<th>Prenom</th>
 			<th>Fonction</th>
 			<th>Samedi</th>
 			<th>Dimanche</th>
-			<th>Moyen de transport;</th>
+			<th>Moyen de transport</th>
 			<th>Multi disponibilité</th>
 			<th>Remarques</th>
 		</tr>
 		<tr *ngFor="let row of displayedData">
 			<td *ngFor="let content of row;">{{ content }}</td>
 		</tr>
+	</table>-->
+
+	
+	<table mat-table [dataSource]="displayedData" class="mat-elevation-z8">
+
+	  <ng-container matColumnDef="nom">
+	    <th mat-header-cell *matHeaderCellDef> Nom </th>
+	    <td mat-cell *matCellDef="let element"> {{element.nom}} </td>
+	  </ng-container>
+
+	  <ng-container matColumnDef="prenom">
+	    <th mat-header-cell *matHeaderCellDef> Prenom </th>
+	    <td mat-cell *matCellDef="let element"> {{element.prenom}} </td>
+	  </ng-container>
+
+	  <ng-container matColumnDef="fonction">
+	    <th mat-header-cell *matHeaderCellDef> Fonction </th>
+	    <td mat-cell *matCellDef="let element"> {{element.fonction}} </td>
+	  </ng-container>
+
+
+	  <ng-container matColumnDef="samedi">
+	    <th mat-header-cell *matHeaderCellDef> Samedi </th>
+	    <td mat-cell *matCellDef="let element"> {{element.samedi}} </td>
+	  </ng-container>
+
+	  <ng-container matColumnDef="dimanche">
+	    <th mat-header-cell *matHeaderCellDef> Dimanche </th>
+	    <td mat-cell *matCellDef="let element"> {{element.dimanche}} </td>
+	  </ng-container>
+
+	  <ng-container matColumnDef="transport">
+	    <th mat-header-cell *matHeaderCellDef> Moyen de transport </th>
+	    <td mat-cell *matCellDef="let element"> {{element.transport}} </td>
+	  </ng-container>
+
+	  <ng-container matColumnDef="multi">
+	    <th mat-header-cell *matHeaderCellDef> Multi disponibilité </th>
+	    <td mat-cell *matCellDef="let element"> {{element.multi}} </td>
+	  </ng-container>
+
+	  <ng-container matColumnDef="remarque">
+	    <th mat-header-cell *matHeaderCellDef> Remarques </th>
+	    <td mat-cell *matCellDef="let element"> {{element.remarque}} </td>
+	  </ng-container>
+
+	  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+	  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 	</table>
+	
+
+
+<!--
 
 	Samedi:
 	<table>
@@ -74,5 +177,97 @@
 		</tr>
 	</table>
 
-	
+	Dimanche:
+	<table>
+		<tr>
+			<td>Destinations</td>
+			<td>{{ dimanche.destinations }}</td>
+
+		</tr>
+		<tr>
+			<td>Nombre de bus</td>
+			<td>{{ dimanche.bus }}</td>
+
+		</tr>
+		<tr>
+			<td>Coordinateurs</td>
+			<td>{{ dimanche.coordinators }}</td>
+
+		</tr>
+		<tr>
+			<td>Accompagnateurs</td>
+			<td>{{ dimanche.attendants }}</td>
+
+		</tr>
+		<tr>
+			<td>Nouveaux accompagnateurs</td>
+			<td>{{ dimanche.newAttendants }}</td>
+		</tr>
+	</table>-->
+
+<table mat-table [dataSource]="samedi" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="destinations">
+    <th mat-header-cell *matHeaderCellDef> Destinations </th>
+    <td mat-cell *matCellDef="let element"> {{element.destinations}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="bus">
+    <th mat-header-cell *matHeaderCellDef> Bus </th>
+    <td mat-cell *matCellDef="let element"> {{element.bus}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="coordinators">
+    <th mat-header-cell *matHeaderCellDef> Coordinateurs </th>
+    <td mat-cell *matCellDef="let element"> {{element.coordinators}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="attendants">
+    <th mat-header-cell *matHeaderCellDef> Accompagnateurs </th>
+    <td mat-cell *matCellDef="let element"> {{element.attendants}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="newAttendants">
+    <th mat-header-cell *matHeaderCellDef> Nouveaux Accompagnateurs </th>
+    <td mat-cell *matCellDef="let element"> {{element.newAttendants}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedDaysColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedDaysColumns;"></tr>
+</table>
+
+<table mat-table [dataSource]="dimanche" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="destinations">
+    <th mat-header-cell *matHeaderCellDef> Destinations </th>
+    <td mat-cell *matCellDef="let element"> {{element.destinations}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="bus">
+    <th mat-header-cell *matHeaderCellDef> Bus </th>
+    <td mat-cell *matCellDef="let element"> {{element.bus}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="coordinators">
+    <th mat-header-cell *matHeaderCellDef> Coordinateurs </th>
+    <td mat-cell *matCellDef="let element"> {{element.coordinators}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="attendants">
+    <th mat-header-cell *matHeaderCellDef> Accompagnateurs </th>
+    <td mat-cell *matCellDef="let element"> {{element.attendants}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="newAttendants">
+    <th mat-header-cell *matHeaderCellDef> Nouveaux Accompagnateurs </th>
+    <td mat-cell *matCellDef="let element"> {{element.newAttendants}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedDaysColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedDaysColumns;"></tr>
+</table>
+
+
 </div>
+
+<!--<app-day-form dayName="samedi"></app-day-form>-->
